@@ -13,16 +13,18 @@ db.nyt_articles.find().count()
 db.nyt_articles.find()
 
 // Find the minimum word count of all articles
+use('nyt');
 db.nyt_articles.find(
     {
         "word_count" : { $ne: 0}
     },
-).sort({"word_count":-1}).limit(1);
+).sort({"word_count":1}).limit(1);
 
 // Find the maximum comments on an article
 db.nyt_articles.find().sort({"word_count":-1}).limit(1)
 
 // Avergage word count per newsdesk
+use('nyt');
 db.nyt_articles.aggregate(
     [
         { $group: {
@@ -39,7 +41,7 @@ db.nyt_articles.aggregate(
 // Average of articles published per weekday
 db.nyt_articles.aggregate(
     [
-        // First Stage
+        // First Stage: Count publications for each day
         {
             $group: {
                 _id: {
@@ -51,30 +53,25 @@ db.nyt_articles.aggregate(
             count: { $sum: 1 }
         }
         },
-        // Second Stage
+        // Second Stage: Sum publications per weekday
         {
             $group: {
-              _id: { wd: "$_id.weekday"},
-              total_on_wd: {
+              _id: { weekday: "$_id.weekday"},
+              sum_weekday: {
                 $sum: "$count"
-              },
-              total_wds: {
-                $sum: "$_id.weekday"
               }
             }
         },
-        // Third Stage
+        // Third Stage: Calculate the average for each weekday throughout the year
         {
             $project: {
-              _id: { wd: "$_id.wd"},
-              avg_wd: {
-                $divide: ["$total_on_wd", 52]
-              },
-              wd_d: "$_id.wd"
+              _id: { weekday: "$_id.weekday"},
+              avg_weekday: {
+                $divide: ["$sum_weekday", 52]
               }
-            
+              }      
         },
-        // Fourth Stage
+        // Fourth Stage: Sort the results ascending
         {$sort: {_id: 1}}
     ]
 )
