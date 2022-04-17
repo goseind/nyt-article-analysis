@@ -49,6 +49,9 @@ quit
 # Import the previously copied csv into the new database
 mongoimport --db nyt --collection nyt_articles --type csv --headerline --ignoreBlanks --file nyt.csv
 
+# Import with specific datatypes
+mongoimport --db nyt --collection nyt_articles_2 --type csv --columnsHaveTypes --fields 'newsdesk.string(),section.string(),subsection.string(),material.string(),headline.string(),abstract.string(),keywords.string(),word_count.int32(),pub_date.date(),n_comments.int32(),uniqueID.string()' --file nyt.csv
+
 # Return to mongo shell
 mongo
 

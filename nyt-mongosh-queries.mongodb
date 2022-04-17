@@ -1,29 +1,29 @@
 // MongoDB Playground for New York Times Articles Dataset
 
 // Select the database to use
-use('nyt_test');
+use('nyt');
 
 
 // Simple queries
 
 // Count entires of the dataset
-db.nyt_art.find().count()
+db.nyt_articles.find().count()
 
 // Show all entries of the dataset
-db.nyt_art.find()
+db.nyt_articles.find()
 
-// Find the minimum word count of an article
-db.nyt_art.find(
+// Find the minimum word count of all articles
+db.nyt_articles.find(
     {
         "word_count" : { $ne: 0}
     },
 ).sort({"word_count":-1}).limit(1);
 
 // Find the maximum comments on an article
-db.nyt_art.find().sort({"word_count":-1}).limit(1)
+db.nyt_articles.find().sort({"word_count":-1}).limit(1)
 
 // Avergage word count per newsdesk
-db.nyt_art.aggregate(
+db.nyt_articles.aggregate(
     [
         { $group: {
             _id: "$newsdesk",
@@ -37,7 +37,7 @@ db.nyt_art.aggregate(
 // A more complex query
 
 // Average of articles published per weekday
-db.nyt_art.aggregate(
+db.nyt_articles.aggregate(
     [
         // First Stage
         {
