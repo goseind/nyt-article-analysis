@@ -8,15 +8,69 @@ You can find a more detaild description of this repository in this [Blog Post]()
 
 Below you'll find the commands used in this example step by step, as well as the MongoDB queries in this [file](nyt-mongosh-queries).
 
-### Docker Container
+### Run the Docker Container
 
-Commands to setup the docker container and copy
+Commands to setup the docker container and copy the data into it.
+
+* Link to the official [MongoDB Docker Container](https://hub.docker.com/_/mongo)
+* Link to the [data of NYT](https://www.kaggle.com/datasets/benjaminawd/new-york-times-articles-comments-2020)
 
 ```bash
-docker
+# Run the docker container
+docker run --name some-mongo -p 27018:27017 -d mongo:latest # make sure to expose the port so we can access it later with MangoDB Compass
 
+# Check if the container is running
+docker ps
+
+# Copy data from host to docker container
+docker cp nyt-articles-2020.csv some-mongo:/nyt.csv
+
+# Open bash on docker container
+docker exec -it some-mongo bash
 ```
+
+### Create a database and import
+
+Commands to create a database and import the data into a collection.
+
+```bash
+# Run mongo shell
+mongo
+
+# Show existing databases
+show dbs
+
+# Create and use new database
+use nyt
+
+# Exit mongo shell
+quit
+
+# Import the previously copied csv into the new database
+mongoimport --db nyt --collection nyt_articles --type csv --headerline --ignoreBlanks --file nyt.csv
+
+# Return to mongo shell
+mongo
+
+# Check the databases again to see if nyt is listed now
+show dbs
+
+# Use the nyt database
+use nyt
+```
+
+### Explore and analyze the data
+
+Now that we have stored the data in a database we can execute queries on it. For this part please refer to the separate [query document](nyt-mongosh-queries).
+
+### Using MongoDB Atlas and Charts for visualization
+
+In my [additional blog post]() I explain how to use MongoDB Atlas to create a cluster, import the data there and visualize it with MongoDB Charts.
 
 ## Data Source
 
 * [New York Times Articles & Comments (2020)](https://www.kaggle.com/datasets/benjaminawd/new-york-times-articles-comments-2020), Benjamin Dornel, 04/2022
+
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.

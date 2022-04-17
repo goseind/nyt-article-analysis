@@ -4,9 +4,9 @@
 use('nyt_test');
 
 
-// Simple Queries
+// Simple queries
 
-// Caount entires of the dataset
+// Count entires of the dataset
 db.nyt_art.find().count()
 
 // Show all entries of the dataset
@@ -34,7 +34,7 @@ db.nyt_art.aggregate(
 )
 
 
-// More Complex Query
+// A more complex query
 
 // Average of articles published per weekday
 db.nyt_art.aggregate(
