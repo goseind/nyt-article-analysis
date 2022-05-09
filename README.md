@@ -6,7 +6,7 @@ Analyzing New York Times Articles and Comments (2020) with MongoDB on a Docker c
 
 You can find a more detaild description of this repository in this [Blog Post](https://gosein.de/mongo/mongodb/big-data/kaggle/mongodb-atlas/mongodb-charts/analysis/docker/2022/04/17/nyt-articles-analysis-mongodb.html), which also includes a [Video Tutorial on YouTube](https://youtu.be/2HfKDJpGgQ8).
 
-Below you'll find the commands used in this example step by step, as well as the MongoDB queries in this [file](nyt-mongosh-queries).
+Below you'll find the commands used in this example step by step, as well as the MongoDB queries in this [file](nyt-mongosh-queries.mongodb).
 
 ### Run the Docker Container
 
